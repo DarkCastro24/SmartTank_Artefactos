@@ -7,196 +7,250 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <script src="https://cdn.jsdelivr.net/npm/mqtt/dist/mqtt.min.js"></script>
 <style>
-:root{--bg:#0f1220;--card:#171a2b;--muted:#8a90a5;--text:#e7e9f1;--accent:#7c5cff;--ok:#2ecc71;--warn:#f1c40f;--bad:#e74c3c}
+:root{--bg:#020617;--card:#050f1f;--muted:#8aa2c0;--text:#f9fbff;--accent:#00c6ff;--ok:#22c55e;--warn:#eab308;--bad:#ef4444}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,#24305800,#243058),linear-gradient(180deg,#0e111f 0%,#0f1220 100%);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji"}
+body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,#00c6ff33,#00c6ff00),linear-gradient(180deg,#020617 0%,#020617 45%,#02091b 100%);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji"}
 .container{max-width:1100px;margin:32px auto;padding:0 16px}
-h1{font-size:28px;letter-spacing:.4px;margin:0 0 18px 0}
-.subtitle{color:var(--muted);font-size:14px;margin-top:6px}
+h1{font-size:28px;letter-spacing:.4px;margin:0 0 6px 0}
+.subtitle{color:var(--muted);font-size:14px;margin-top:2px}
 .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-.card{background:linear-gradient(180deg,#1a1f38 0%,#171a2b 100%);border:1px solid #272a44;border-radius:14px;padding:16px;box-shadow:0 6px 20px #00000040}
+.card{background:linear-gradient(180deg,#041320 0%,#050f1f 100%);border:1px solid #08324b;border-radius:14px;padding:16px;box-shadow:0 18px 45px #000000b3}
 .header{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:16px}
-.badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:#cfd3e6;background:#222641;border:1px solid #2d3153;border-radius:999px;padding:6px 10px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:64px;height:64px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 14px rgba(0,198,255,.9))}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:#d1e4ff;background:#021827;border:1px solid #08324b;border-radius:999px;padding:6px 10px}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 input,button{font:inherit;color:inherit}
-input[type=text],input[type=password]{background:#121528;border:1px solid #2d3153;border-radius:10px;color:var(--text);padding:10px 12px;min-width:160px}
-button{background:var(--accent);border:0;border-radius:10px;padding:10px 14px;color:white;font-weight:600;cursor:pointer}
-button.ghost{background:#222641}
-button.warning{background:#f39c12}
+input[type=text],input[type=password]{background:#020e1a;border:1px solid #08324b;border-radius:10px;color:var(--text);padding:10px 12px;min-width:160px}
+button{background:var(--accent);border:0;border-radius:10px;padding:10px 14px;color:#020617;font-weight:600;cursor:pointer}
+button.ghost{background:#021827;color:#e5f2ff}
+button.warning{background:#f97316;color:#020617}
+button:disabled{opacity:.6;cursor:default}
 .controls{grid-column:span 12}
 .kpi{grid-column:span 3;display:flex;flex-direction:column;gap:8px}
 .kpi .title{color:var(--muted);font-size:12px;letter-spacing:.3px;text-transform:uppercase}
 .kpi .value{font-size:28px;font-weight:800}
-.fillbar{height:14px;border-radius:999px;background:#0f1220;border:1px solid #2d3153;position:relative;overflow:hidden}
-.fillbar>span{position:absolute;inset:0 0 0 0;transform-origin:left center;transform:scaleX(0);background:linear-gradient(90deg,#3b82f6,#7c5cff)}
-.progress-ring{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) 0deg, var(--accent) 0deg, #1f2440 0deg)}
-.progress-ring .inner{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:#0f1220;border:1px solid #2d3153}
+.fillbar{height:14px;border-radius:999px;background:#020617;border:1px solid #08324b;position:relative;overflow:hidden}
+.fillbar>span{position:absolute;inset:0 0 0 0;transform-origin:left center;transform:scaleX(0);background:linear-gradient(90deg,#00c6ff,#22c55e)}
+.progress-ring{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) 0deg,var(--accent) 0deg,#041320 0deg)}
+.progress-ring .inner{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:#020617;border:1px solid #08324b}
 .state{display:flex;gap:10px;align-items:center}
 .state .dot{width:12px;height:12px;border-radius:50%}
-.state.ok .dot{background:var(--ok)}
-.state.warn .dot{background:var(--warn)}
-.state.bad .dot{background:var(--bad)}
+.state.ok .dot{background:var(--ok);box-shadow:0 0 12px rgba(34,197,94,.7)}
+.state.warn .dot{background:var(--warn);box-shadow:0 0 12px rgba(234,179,8,.7)}
+.state.bad .dot{background:var(--bad);box-shadow:0 0 12px rgba(239,68,68,.7)}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{background:#222641;border:1px solid #2d3153;color:#cfd3e6;padding:6px 10px;border-radius:999px;font-size:12px}
+.chip{background:#021827;border:1px solid #08324b;color:#d1e4ff;padding:6px 10px;border-radius:999px;font-size:12px}
 .kpi.center{align-items:center;text-align:center}
-.gauge{width:160px;height:160px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) 0deg,var(--accent) 0deg,#1f2440 0deg)}
-.gauge .inner{width:112px;height:112px;border-radius:50%;display:grid;place-items:center;background:#0f1220;border:1px solid #2d3153}
-.led{width:18px;height:18px;border-radius:50%;border:2px solid #1c1f34}
-.led.verde{background:#2ecc71;box-shadow:0 0 16px #2ecc7180}
-.led.amarillo{background:#f1c40f;box-shadow:0 0 16px #f1c40f80}
-.led.rojo{background:#e74c3c;box-shadow:0 0 16px #e74c3c80}
-.sep{height:1px;background:#2d3153;margin:10px 0}
-.footer{grid-column:span 12;color:#9aa0b6;font-size:12px;text-align:center;margin-top:8px}
-.small{font-size:12px;color:#b8bed2}
-.label{font-size:12px;color:#cfd3e6}
+.gauge{width:160px;height:160px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) 0deg,var(--accent) 0deg,#041320 0deg)}
+.gauge .inner{width:112px;height:112px;border-radius:50%;display:grid;place-items:center;background:#020617;border:1px solid #08324b}
+.led{width:18px;height:18px;border-radius:50%;border:2px solid #020617}
+.led.verde{background:#22c55e;box-shadow:0 0 16px #22c55ecc}
+.led.amarillo{background:#eab308;box-shadow:0 0 16px #eab308cc}
+.led.rojo{background:#ef4444;box-shadow:0 0 16px #ef4444cc}
+.sep{height:1px;background:#08324b;margin:10px 0}
+.footer{grid-column:span 12;color:#9db4d8;font-size:12px;text-align:center;margin-top:8px}
+.small{font-size:12px;color:#c5d5f0}
+.label{font-size:12px;color:#d1e4ff}
 .switch{position:relative;width:52px;height:28px}
 .switch input{opacity:0;width:0;height:0}
-.slider{position:absolute;cursor:default;inset:0;background:#2b2f4b;border:1px solid #3a3f62;border-radius:999px}
-.slider:before{position:absolute;content:"";height:22px;width:22px;left:3px;top:2px;background:white;border-radius:50%}
+.slider{position:absolute;cursor:default;inset:0;background:#021827;border:1px solid #08324b;border-radius:999px}
+.slider:before{position:absolute;content:"";height:22px;width:22px;left:3px;top:2px;background:#e5f2ff;border-radius:50%;box-shadow:0 2px 6px #00000080}
+.switch input:checked + .slider{background:#00c6ff33;border-color:#00c6ff}
+.switch input:checked + .slider:before{transform:translateX(22px)}
 .switch.readonly{opacity:.6;pointer-events:none}
 @media (max-width:900px){.kpi{grid-column:span 6}.gauge{width:140px;height:140px}.progress-ring{width:100px;height:100px}}
-@media (max-width:560px){.kpi{grid-column:span 12}}
+@media (max-width:560px){.kpi{grid-column:span 12}.header{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
 <div class="container">
-<div class="header">
-<div>
-<h1>Smartank • Panel de Sensores</h1>
-<div class="subtitle">Prefijado para MQTT con tópicos estándar del proyecto. Solo ingresa credenciales si tu broker las requiere.</div>
-</div>
-<div class="chips">
-<div class="chip">ESP32</div>
-<div class="chip">MQTT</div>
-<div class="chip">Tiempo real</div>
-</div>
-</div>
-<div class="grid">
-<div class="card controls">
-<div class="row" style="justify-content:space-between;align-items:flex-end">
-<div class="row" style="gap:12px;flex-wrap:wrap">
-<span class="badge">MQTT</span>
-<div class="row" style="gap:8px">
-<label class="label">Usuario</label>
-<input id="mqttUser" type="text" placeholder="opcional">
-</div>
-<div class="row" style="gap:8px">
-<label class="label">Clave</label>
-<input id="mqttPass" type="password" placeholder="opcional">
-</div>
-<button id="btnMqtt" class="ghost">Conectar</button>
-</div>
-</div>
-<div class="sep"></div>
-<div class="small">Broker: <b>wss://broker.emqx.io:8084/mqtt</b> • Tema JSON: <b>smartank/estado</b> • Prefijo por variable: <b>smartank</b></div>
-</div>
-<div class="card kpi">
-<div class="title">Distancia</div>
-<div class="value"><span id="distancia">--</span> cm</div>
-<div class="fillbar"><span id="distBar"></span></div>
-</div>
-<div class="card kpi">
-<div class="title">Altura de agua</div>
-<div class="value"><span id="altura">--</span> cm</div>
-<div class="fillbar"><span id="altBar"></span></div>
-</div>
-<div class="card kpi center">
-<div class="title">Nivel del tanque</div>
-<div class="progress-ring" id="ring"><div class="inner"><div class="value"><span id="porcentaje">--</span>%</div></div></div>
-</div>
-<div class="card kpi">
-<div class="title">pH</div>
-<div class="value"><span id="ph">--</span></div>
-<div class="state" id="phState"><span class="dot"></span><span id="phLabel" class="small">--</span></div>
-</div>
-<div class="card kpi center">
-<div class="title">TDS</div>
-<div class="gauge" id="tdsGauge"><div class="inner"><div class="value"><span id="tds">--</span> ppm</div></div></div>
-<div class="small">0–2000 ppm</div>
-</div>
-<div class="card kpi">
-<div class="title">Bomba de llenado</div>
-<div class="row" style="justify-content:space-between">
-<div class="state" id="llenadoState"><span class="dot"></span><span id="llenadoText">--</span></div>
-<label class="switch readonly"><input id="llenadoSwitch" type="checkbox" disabled><span class="slider"></span></label>
-</div>
-</div>
-<div class="card kpi">
-<div class="title">Bomba de drenaje</div>
-<div class="row" style="justify-content:space-between">
-<div class="state" id="drenajeState"><span class="dot"></span><span id="drenajeText">--</span></div>
-<label class="switch readonly"><input id="drenajeSwitch" type="checkbox" disabled><span class="slider"></span></label>
-</div>
-</div>
-<div class="card kpi">
-<div class="title">Modo</div>
-<div class="row" style="justify-content:space-between">
-<div class="badge" id="modoText">--</div>
-<label class="switch readonly"><input id="modoSwitch" type="checkbox" disabled><span class="slider"></span></label>
-</div>
-</div>
-<div class="card kpi">
-<div class="title">LED de nivel</div>
-<div class="row" style="gap:10px;align-items:center">
-<div id="led" class="led"></div>
-<div id="ledText" class="small">--</div>
-</div>
-</div>
-<div class="footer small">Smartank • Panel web prefijado</div>
-</div>
+  <div class="header">
+    <div class="brand">
+      <div>
+        <h1>Smartank • Panel de Sensores</h1>
+        <div class="subtitle">Prefijado para MQTT con tópicos estándar del proyecto. Solo ingresa credenciales si tu broker las requiere.</div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip">ESP32</div>
+      <div class="chip">MQTT</div>
+      <div class="chip">Tiempo real</div>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="card controls">
+      <div class="row" style="justify-content:space-between;align-items:flex-end">
+        <div class="row" style="gap:12px;flex-wrap:wrap">
+          <span class="badge">MQTT</span>
+          <div class="row" style="gap:8px">
+            <label class="label">Usuario</label>
+            <input id="mqttUser" type="text" placeholder="opcional">
+          </div>
+          <div class="row" style="gap:8px">
+            <label class="label">Clave</label>
+            <input id="mqttPass" type="password" placeholder="opcional">
+          </div>
+          <button id="btnMqtt" class="ghost">Conectar</button>
+        </div>
+      </div>
+      <div class="sep"></div>
+      <div class="small">Broker: <b>wss://broker.emqx.io:8084/mqtt</b> • Tema JSON: <b>smartank/estado</b> • Prefijo por variable: <b>smartank</b></div>
+    </div>
+    <div class="card kpi">
+      <div class="title">Distancia</div>
+      <div class="value"><span id="distancia">--</span> cm</div>
+      <div class="fillbar"><span id="distBar"></span></div>
+    </div>
+    <div class="card kpi">
+      <div class="title">Altura de agua</div>
+      <div class="value"><span id="altura">--</span> cm</div>
+      <div class="fillbar"><span id="altBar"></span></div>
+    </div>
+    <div class="card kpi center">
+      <div class="title">Nivel del tanque</div>
+      <div class="progress-ring" id="ring"><div class="inner"><div class="value"><span id="porcentaje">--</span>%</div></div></div>
+    </div>
+    <div class="card kpi">
+      <div class="title">pH</div>
+      <div class="value"><span id="ph">--</span></div>
+      <div class="state" id="phState"><span class="dot"></span><span id="phLabel" class="small">--</span></div>
+    </div>
+    <div class="card kpi center">
+      <div class="title">TDS</div>
+      <div class="gauge" id="tdsGauge"><div class="inner"><div class="value"><span id="tds">--</span> ppm</div></div></div>
+      <div class="small">0–2000 ppm</div>
+    </div>
+    <div class="card kpi">
+      <div class="title">Bomba de llenado</div>
+      <div class="row" style="justify-content:space-between">
+        <div class="state" id="llenadoState"><span class="dot"></span><span id="llenadoText">--</span></div>
+        <label class="switch">
+          <input id="llenadoSwitch" type="checkbox" disabled><span class="slider"></span>
+        </label>
+      </div>
+    </div>
+    <div class="card kpi">
+      <div class="title">Modo</div>
+      <div class="row" style="justify-content:space-between">
+        <div class="badge" id="modoText">--</div>
+        <label class="switch">
+          <input id="modoSwitch" type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+    <div class="footer small">Smartank • Panel web prefijado</div>
+  </div>
 </div>
 <script>
-var MQTT_URL="wss://broker.emqx.io:8084/mqtt"
-var TOPIC_JSON="smartank/estado"
-var TOPIC_BASE="smartank"
-var state={distancia:null,altura:null,porcentaje:null,ph:null,tds:null,bomba_llenado:null,bomba_drenaje:null,modo_manual:null,led_estado:null}
-var mqttClient=null,mqttConnected=false
-function fmt(n,d){if(n==null||Number.isNaN(n))return"--";return Number(n).toFixed(d)}
-function clamp(n,min,max){return Math.max(min,Math.min(max,n))}
-function setFill(el,p){el.style.transform="scaleX("+clamp(p,0,1)+")"}
-function setRing(deg){document.getElementById("ring").style.background="conic-gradient(var(--accent) 0deg,var(--accent) "+deg+"deg,#1f2440 "+deg+"deg)"}
-function setGauge(deg){document.getElementById("tdsGauge").style.background="conic-gradient(var(--accent) 0deg,var(--accent) "+deg+"deg,#1f2440 "+deg+"deg)"}
-function phToState(v){if(v==null)return["--","--"];if(v<6.5)return["Ácido","bad"];if(v<=7.5)return["Neutro","ok"];return["Básico","warn"]}
-function ledClass(txt){if(!txt)return"";txt=txt.toLowerCase();if(txt.includes("verde"))return"verde";if(txt.includes("amar"))return"amarillo";if(txt.includes("rojo"))return"rojo";return""}
-function boolText(v){if(v==null)return"--";return v?"Encendida":"Apagada"}
-function boolMode(v){if(v==null)return"--";return v?"Manual":"Automático"}
+var MQTT_URL="wss://broker.emqx.io:8084/mqtt";
+var TOPIC_JSON="smartank/estado";
+var TOPIC_CONTROL="smartank/control";
+var state={distancia:null,altura:null,porcentaje:null,ph:null,tds:null,bomba_llenado:null,bomba_drenaje:null,modo_manual:null,led_estado:null};
+var mqttClient=null,mqttConnected=false;
+function fmt(n,d){if(n==null||Number.isNaN(n))return"--";return Number(n).toFixed(d);}
+function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
+function setFill(el,p){if(!el)return;el.style.transform="scaleX("+clamp(p,0,1)+")";}
+function setRing(deg){document.getElementById("ring").style.background="conic-gradient(var(--accent) 0deg, var(--accent) "+deg+"deg, #041320 "+deg+"deg)";}
+function setGauge(deg){document.getElementById("tdsGauge").style.background="conic-gradient(var(--accent) 0deg, var(--accent) "+deg+"deg, #041320 "+deg+"deg)";}
+function phToState(v){if(v==null)return["--","--"];if(v<6.5)return["Ácido","bad"];if(v<=7.5)return["Neutro","ok"];return["Básico","warn"];}
+function ledClass(txt){if(!txt)return"";txt=txt.toLowerCase();if(txt.includes("verde"))return"verde";if(txt.includes("amar"))return"amarillo";if(txt.includes("rojo"))return"rojo";return"";}
+function boolText(v){if(v==null)return"--";return v?"Encendida":"Apagada";}
+function boolMode(v){if(v==null)return"--";return v?"Manual":"Automático";}
 function updateUI(s){
-if(typeof s.distancia==="number"){state.distancia=s.distancia;document.getElementById("distancia").textContent=fmt(state.distancia,1);setFill(document.getElementById("distBar"),(100-(state.distancia||0))/100)}
-if(typeof s.altura==="number"){state.altura=s.altura;document.getElementById("altura").textContent=fmt(state.altura,1);setFill(document.getElementById("altBar"),(state.altura||0)/100)}
-if(typeof s.porcentaje==="number"){state.porcentaje=s.porcentaje;document.getElementById("porcentaje").textContent=fmt(state.porcentaje,0);setRing(clamp(state.porcentaje,0,100)*3.6)}
-if(typeof s.ph==="number"){state.ph=s.ph;document.getElementById("ph").textContent=fmt(state.ph,2);var st=phToState(state.ph);var c=document.getElementById("phState");c.classList.remove("ok","warn","bad");if(st[1]!=="--")c.classList.add(st[1]);document.getElementById("phLabel").textContent=st[0]}
-if(typeof s.tds==="number"){state.tds=s.tds;document.getElementById("tds").textContent=fmt(state.tds,0);var max=2000;var deg=clamp(state.tds/max,0,1)*360;setGauge(deg)}
-if(typeof s.bomba_llenado==="boolean"){state.bomba_llenado=s.bomba_llenado;document.getElementById("llenadoText").textContent=boolText(state.bomba_llenado);var st=document.getElementById("llenadoState");st.classList.remove("ok","bad");st.classList.add(state.bomba_llenado?"ok":"bad");document.getElementById("llenadoSwitch").checked=!!state.bomba_llenado}
-if(typeof s.bomba_drenaje==="boolean"){state.bomba_drenaje=s.bomba_drenaje;document.getElementById("drenajeText").textContent=boolText(state.bomba_drenaje);var st=document.getElementById("drenajeState");st.classList.remove("ok","bad");st.classList.add(state.bomba_drenaje?"ok":"bad");document.getElementById("drenajeSwitch").checked=!!state.bomba_drenaje}
-if(typeof s.modo_manual==="boolean"){state.modo_manual=s.modo_manual;document.getElementById("modoText").textContent=boolMode(state.modo_manual);document.getElementById("modoSwitch").checked=!!state.modo_manual}
-if(typeof s.led_estado==="string"){state.led_estado=s.led_estado;var lc=ledClass(state.led_estado);var led=document.getElementById("led");led.classList.remove("verde","amarillo","rojo");if(lc)led.classList.add(lc);document.getElementById("ledText").textContent=state.led_estado}
-if(state.porcentaje==null&&state.altura!=null){var pct=clamp((state.altura/100)*100,0,100);updateUI({porcentaje:pct})}
+  if(typeof s.distancia==="number"){state.distancia=s.distancia;document.getElementById("distancia").textContent=fmt(state.distancia,1);setFill(document.getElementById("distBar"),(100-(state.distancia||0))/100);}
+  if(typeof s.altura==="number"){state.altura=s.altura;document.getElementById("altura").textContent=fmt(state.altura,1);setFill(document.getElementById("altBar"),(state.altura||0)/100);}
+  if(typeof s.porcentaje==="number"){state.porcentaje=s.porcentaje;document.getElementById("porcentaje").textContent=fmt(state.porcentaje,0);setRing(clamp(state.porcentaje,0,100)*3.6);}
+  if(typeof s.ph==="number"){state.ph=s.ph;document.getElementById("ph").textContent=fmt(state.ph,2);var st=phToState(state.ph);var c=document.getElementById("phState");c.classList.remove("ok","warn","bad");if(st[1]!=="--")c.classList.add(st[1]);document.getElementById("phLabel").textContent=st[0];}
+  if(typeof s.tds==="number"){state.tds=s.tds;document.getElementById("tds").textContent=fmt(state.tds,0);var max=2000;var deg=clamp(state.tds/max,0,1)*360;setGauge(deg);}
+  if(s.hasOwnProperty("bomba_llenado")){
+    if(typeof s.bomba_llenado==="boolean")state.bomba_llenado=s.bomba_llenado;else state.bomba_llenado=String(s.bomba_llenado).toLowerCase()==="true";
+    document.getElementById("llenadoText").textContent=boolText(state.bomba_llenado);
+    var st2=document.getElementById("llenadoState");
+    st2.classList.remove("ok","bad");
+    st2.classList.add(state.bomba_llenado?"ok":"bad");
+    document.getElementById("llenadoSwitch").checked=!!state.bomba_llenado;
+  }
+  if(typeof s.modo_manual==="boolean"){
+    state.modo_manual=s.modo_manual;
+    document.getElementById("modoText").textContent=boolMode(state.modo_manual);
+    document.getElementById("modoSwitch").checked=!!state.modo_manual;
+    document.getElementById("llenadoSwitch").disabled=!(state.modo_manual&&mqttConnected);
+  }
+  if(typeof s.led_estado==="string"){
+    state.led_estado=s.led_estado;
+    var lc=ledClass(state.led_estado);
+    var led=document.getElementById("led");
+    if(led){led.classList.remove("verde","amarillo","rojo");if(lc)led.classList.add(lc);}
+  }
+  if(state.porcentaje==null&&state.altura!=null){
+    var pct=clamp(state.altura,0,100);
+    updateUI({porcentaje:pct});
+  }
 }
-function coerceValue(k,v){
-if(typeof v!=="string")return v
-var t=v.trim()
-if(k==="bomba_llenado"||k==="bomba_drenaje"||k==="modo_manual"){t=t.toLowerCase();if(t==="true"||t==="1"||t==="on"||t==="encendida"||t==="activada"||t==="activado")return true;return false}
-if(k==="led_estado")return t.toUpperCase()
-var num=parseFloat(t);return Number.isFinite(num)?num:null
-}
-function coerceAndUpdate(o){
-var r={}
-Object.keys(o).forEach(function(k){r[k]=coerceValue(k,o[k])})
-updateUI(r)
-}
+document.getElementById("modoSwitch").addEventListener("change",function(){
+  if(!mqttClient||!mqttConnected){this.checked=!this.checked;return;}
+  const modoManual=this.checked?"MODE:ON":"MODE:OFF";
+  mqttClient.publish(TOPIC_CONTROL,modoManual);
+});
+document.getElementById("llenadoSwitch").addEventListener("change",function(){
+  if(!mqttClient||!mqttConnected){this.checked=!this.checked;return;}
+  if(!state.modo_manual){
+    mqttClient.publish(TOPIC_CONTROL,"MODE:ON");
+  }
+  const cmd=this.checked?"PUMP_ON":"PUMP_OFF";
+  mqttClient.publish(TOPIC_CONTROL,cmd);
+});
 function connectMQTT(){
-if(mqttConnected){try{mqttClient.end(true)}catch(e){}mqttClient=null;mqttConnected=false;document.getElementById("btnMqtt").textContent="Conectar";return}
-var user=document.getElementById("mqttUser").value||undefined
-var pass=document.getElementById("mqttPass").value||undefined
-var clientId="smartank-web-"+Math.random().toString(16).slice(2)
-mqttClient=mqtt.connect(MQTT_URL,{clientId:clientId,username:user,password:pass,clean:true,connectTimeout:6000,reconnectPeriod:5000})
-mqttClient.on("connect",function(){mqttConnected=true;document.getElementById("btnMqtt").textContent="Desconectar";if(TOPIC_JSON)mqttClient.subscribe(TOPIC_JSON);if(TOPIC_BASE){["distancia","altura","porcentaje","ph","tds","bomba_llenado","bomba_drenaje","modo_manual","led_estado"].forEach(function(k){mqttClient.subscribe(TOPIC_BASE+"/"+k)})}})
-mqttClient.on("message",function(topic,payload){try{var txt=new TextDecoder().decode(payload);if(topic===TOPIC_JSON){try{var obj=JSON.parse(txt);coerceAndUpdate(obj)}catch(e){}}else{if(topic.startsWith(TOPIC_BASE+"/")){var key=topic.slice(TOPIC_BASE.length+1);var obj={};obj[key]=coerceValue(key,txt);coerceAndUpdate(obj)}}}catch(e){} })
-mqttClient.on("close",function(){mqttConnected=false;document.getElementById("btnMqtt").textContent="Conectar"})
+  if(mqttConnected){
+    try{mqttClient.end(true);}catch(e){}
+    mqttClient=null;
+    mqttConnected=false;
+    document.getElementById("btnMqtt").textContent="Conectar";
+    document.getElementById("llenadoSwitch").disabled=true;
+    return;
+  }
+  var user=document.getElementById("mqttUser").value||undefined;
+  var pass=document.getElementById("mqttPass").value||undefined;
+  var clientId="smartank-web-"+Math.random().toString(16).slice(2);
+  mqttClient=mqtt.connect(MQTT_URL,{clientId:clientId,username:user,password:pass,clean:true,connectTimeout:6000,reconnectPeriod:5000});
+  mqttClient.on("connect",function(){
+    mqttConnected=true;
+    document.getElementById("btnMqtt").textContent="Desconectar";
+    if(TOPIC_JSON)mqttClient.subscribe(TOPIC_JSON);
+    if(TOPIC_CONTROL)mqttClient.subscribe(TOPIC_CONTROL);
+    document.getElementById("llenadoSwitch").disabled=!state.modo_manual;
+  });
+  mqttClient.on("message",function(topic,payload){
+    try{
+      var txt=new TextDecoder().decode(payload);
+      if(topic===TOPIC_JSON){
+        try{
+          var obj=JSON.parse(txt);
+          if(obj.hasOwnProperty("porcentaje"))obj.porcentaje=Number(obj.porcentaje);
+          if(obj.hasOwnProperty("distancia"))obj.distancia=Number(obj.distancia);
+          if(obj.hasOwnProperty("altura"))obj.altura=Number(obj.altura);
+          if(obj.hasOwnProperty("ph"))obj.ph=Number(obj.ph);
+          if(obj.hasOwnProperty("tds"))obj.tds=Number(obj.tds);
+          if(obj.hasOwnProperty("bomba_llenado"))obj.bomba_llenado=(obj.bomba_llenado===true||String(obj.bomba_llenado).toLowerCase()==="true");
+          if(obj.hasOwnProperty("bomba_drenaje"))obj.bomba_drenaje=(obj.bomba_drenaje===true||String(obj.bomba_drenaje).toLowerCase()==="true");
+          if(obj.hasOwnProperty("modo_manual"))obj.modo_manual=(obj.modo_manual===true||String(obj.modo_manual).toLowerCase()==="true");
+          updateUI(obj);
+        }catch(e){console.warn("JSON inválido:",txt);}
+      }
+    }catch(e){}
+  });
+  mqttClient.on("close",function(){
+    mqttConnected=false;
+    document.getElementById("btnMqtt").textContent="Conectar";
+    document.getElementById("llenadoSwitch").disabled=true;
+  });
+  mqttClient.on("error",function(err){console.error("MQTT error:",err);});
 }
-document.getElementById("btnMqtt").addEventListener("click",connectMQTT)
-updateUI({})
+document.getElementById("btnMqtt").addEventListener("click",connectMQTT);
+updateUI({});
 </script>
 </body>
 </html>
