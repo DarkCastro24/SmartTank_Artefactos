@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smartank | Panel de Sensores (Prefijado)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/mqtt/dist/mqtt.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="brand">
+      <div>
+        <h1>Smartank • Panel de Sensores</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card controls">
+      <div class="row" style="justify-content:space-between;align-items:flex-end">
+        <div class="row" style="gap:12px;flex-wrap:wrap">
+          <span class="badge">MQTT</span>
+          <div class="row" style="gap:8px">
+            <label class="label">Usuario</label>
+            <input id="mqttUser" type="text" placeholder="opcional">
+          </div>
+          <div class="row" style="gap:8px">
+            <label class="label">Clave</label>
+            <input id="mqttPass" type="password" placeholder="opcional">
+          </div>
+          <button id="btnMqtt" class="ghost">Conectar</button>
+        </div>
+      </div>
+      <div class="sep"></div>
+      <div class="small">Conéctate al topic <code>smartank/estado</code> para ver las lecturas.</div>
+    </div>
+
+    <div class="card kpi">
+      <div class="title">Altura libre dentro del tanque</div>
+      <div class="value"><span id="distancia">--</span> cm</div>
+      <div class="fillbar"><span id="distBar"></span></div>
+    </div>
+
+    <div class="card kpi">
+      <div class="title">Altura del agua</div>
+      <div class="value"><span id="altura">--</span> cm</div>
+      <div class="fillbar"><span id="altBar"></span></div>
+    </div>
+
+    <div class="card kpi center">
+      <div class="title">Nivel del tanque</div>
+      <div class="progress-ring" id="ring"><div class="inner"><div class="value"><span id="porcentaje">--</span>%</div></div></div>
+    </div>
+
+    <div class="card kpi">
+      <div class="title">pH</div>
+      <div class="value"><span id="ph">--</span></div>
+      <div class="state" id="phState"><span class="dot"></span><span id="phLabel" class="small">--</span></div>
+    </div>
+
+    <div class="card kpi center">
+      <div class="title">TDS</div>
+      <div class="gauge" id="tdsGauge"><div class="inner"><div class="value"><span id="tds">--</span> ppm</div></div></div>
+      <div class="small">0–2000 ppm</div>
+    </div>
+
+    <div class="card kpi">
+      <div class="title">Bomba de llenado</div>
+      <div class="row" style="justify-content:space-between">
+        <div class="state" id="llenadoState"><span class="dot"></span><span id="llenadoText">--</span></div>
+        <label class="switch">
+          <input id="llenadoSwitch" type="checkbox" disabled><span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="card kpi">
+      <div class="title">Modo</div>
+      <div class="row" style="justify-content:space-between">
+        <div class="badge" id="modoText">--</div>
+        <label class="switch">
+          <input id="modoSwitch" type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="card kpi">
+      <div class="title">Calidad del agua</div>
+      <div class="quality-row">
+        <div style="display:flex;align-items:center;gap:10px;justify-content:space-between">
+          <div>
+            <div class="quality-label" id="qualityLabel">--</div>
+            <div class="quality-desc" id="qualityDesc">--</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+            <div class="quality-dot" id="qualityDot" style="background:#888;border:2px solid #020617;width:18px;height:18px;border-radius:50%"></div>
+            <div class="small">según TDS</div>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div>
+          <div class="small">Estado bomba de drenaje</div>
+          <div class="row" style="justify-content:space-between;align-items:center">
+            <div class="state" id="drenajeState"><span class="dot"></span><span id="drenajeText">--</span></div>
+            <label class="switch">
+              <input id="drenajeSwitch" type="checkbox" disabled><span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer small">Smartank • Sistema de monitoreo para cisterna</div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
