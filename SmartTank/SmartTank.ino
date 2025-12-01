@@ -6,8 +6,8 @@
 #include <PubSubClient.h>
 
 /***** WiFi *****/
-const char *ssid = "Los_Castro";
-const char *wifiPassword = "Extreme8000";
+const char *ssid = "S24";
+const char *wifiPassword = "12345678";
 
 /***** MQTT *****/
 char *mqttServer = "broker.emqx.io";
@@ -41,7 +41,7 @@ float velocidadSonido = 0.0343 / 2.0;
 float alturaMaxima = 12.0;
 
 /***** Calibracion PH/TDS *****/
-float desplazamientoPh = 0.00;
+float desplazamientoPh = 2.23;
 float pendientePh = -0.18;
 float factorTds = 0.5;
 
@@ -193,10 +193,10 @@ void actualizarIndicadores(float porcentaje) {
 
 // Clasifica calidad de agua segun valor TDS y devuelve etiqueta.
 String clasificarTds(float tds) {
-  if (tds <= 150.0) return "muy buena";
-  if (tds <= 200.0) return "buena";
-  if (tds <= 250.0) return "regular";
-  if (tds <= 350.0) return "mala";
+  if (tds <= 170.0) return "muy buena";
+  if (tds <= 300.0) return "buena";
+  if (tds <= 375.0) return "regular";
+  if (tds <= 500.0) return "mala";
   return "muy mala";
 }
 
